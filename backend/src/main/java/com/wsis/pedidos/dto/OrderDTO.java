@@ -1,36 +1,52 @@
 package com.wsis.pedidos.dto;
 
+import com.wsis.pedidos.entities.OderStatus;
+import com.wsis.pedidos.entities.Order;
 import com.wsis.pedidos.entities.Product;
 
 import java.io.Serializable;
+import java.time.Instant;
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
+import java.util.stream.Collectors;
 
-public class ProductDTO implements Serializable {
+public class OrderDTO implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
     private Long id;
-    private String name;
-    private Double price;
-    private String description;
-    private String imageUri;
+    private String address;
+    private Double latitude;
+    private Double longitude;
+    private Instant moment;
+    private OderStatus status;
+    private List<ProductDTO> products = new ArrayList<>();
 
-    public ProductDTO() {
+    public OrderDTO() {
     }
 
-    public ProductDTO(Long id, String name, Double price, String description, String imageUri) {
+    public OrderDTO(Long id, String address, Double latitude, Double longitude, Instant moment, OderStatus status) {
         this.id = id;
-        this.name = name;
-        this.price = price;
-        this.description = description;
-        this.imageUri = imageUri;
+        this.address = address;
+        this.latitude = latitude;
+        this.longitude = longitude;
+        this.moment = moment;
+        this.status = status;
     }
 
-    public ProductDTO(Product entity) {
+    public OrderDTO(Order entity) {
         this.id = entity.getId();
-        this.name = entity.getName();
-        this.price = entity.getPrice();
-        this.description = entity.getDescription();
-        this.imageUri = entity.getImageUri();
+        this.address = entity.getAddress();
+        this.latitude = entity.getLatitude();
+        this.longitude = entity.getLongitude();
+        this.moment = entity.getMoment();
+        this.status = entity.getStatus();
+
+        this.products = entity.getProducts().stream()
+                .map(p -> new ProductDTO(p))
+                .collect(Collectors.toList());
     }
 
     public Long getId() {
@@ -41,35 +57,48 @@ public class ProductDTO implements Serializable {
         this.id = id;
     }
 
-    public String getName() {
-        return name;
+    public String getAddress() {
+        return address;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setAddress(String address) {
+        this.address = address;
     }
 
-    public Double getPrice() {
-        return price;
+    public Double getLatitude() {
+        return latitude;
     }
 
-    public void setPrice(Double price) {
-        this.price = price;
+    public void setLatitude(Double latitude) {
+        this.latitude = latitude;
     }
 
-    public String getDescription() {
-        return description;
+    public Double getLongitude() {
+        return longitude;
     }
 
-    public void setDescription(String description) {
-        this.description = description;
+    public void setLongitude(Double longitude) {
+        this.longitude = longitude;
     }
 
-    public String getImageUri() {
-        return imageUri;
+    public Instant getMoment() {
+        return moment;
     }
 
-    public void setImageUri(String imageUri) {
-        this.imageUri = imageUri;
+    public void setMoment(Instant moment) {
+        this.moment = moment;
     }
+
+    public OderStatus getStatus() {
+        return status;
+    }
+
+    public void setStatus(OderStatus status) {
+        this.status = status;
+    }
+
+    public List<ProductDTO> getProducts() {
+        return products;
+    }
+
 }
